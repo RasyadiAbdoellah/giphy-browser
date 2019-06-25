@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter, Router, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { MainContainer } from './containers';
 import { Provider } from 'react-redux';
 import store from './redux/store'
@@ -16,7 +16,7 @@ import store from './redux/store'
 export default class App extends Component {
   render() {
     return (
-      <HashRouter>
+      <BrowserRouter>
         <Provider store={store}>
         <div className="App">
           <div className="flex-container">
@@ -27,7 +27,7 @@ export default class App extends Component {
           </div>
         </div>
         </Provider>
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }
