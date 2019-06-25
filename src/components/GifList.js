@@ -5,7 +5,7 @@ function GifCard(props) {
   const { gif, match } = props;
   return (
     <Link to={`${match.url}/${gif.id}`} className="gif-card">
-      <h1>{gif.name}</h1>
+      <h1>Gif entry</h1>
     </Link>
   );
 }
@@ -16,6 +16,7 @@ export default function GifList(props) {
       {props.gifs && props.gifs.map(gif => (
         <GifCard key={gif.id} gif={gif} {...props} />
       ))}
+      {(!props.gifs && props.getFail) && <div><h3>Oops! Something went wrong... </h3></div>}
     </div>
   );
 }

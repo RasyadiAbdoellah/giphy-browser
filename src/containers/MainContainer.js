@@ -9,19 +9,19 @@ import { getGifsList, getStateGifs } from '../redux/selectors';
 import { GifList, MainNav } from '../components';
 import { GifDetailsContainer } from '.';
 
-class MainContainer extends React.Component {
+export class Main extends React.Component {
   render() {
     const {
       gifList,
       gifIsGetting,
       gifGetFailed,
-      getAllGifs,
+      getGifs,
       auth,
     } = this.props;
     return (
       <>
         <div id="main">
-          <MainNav id="navbar" auth={auth} getAllGifs={getAllGifs} />
+          <MainNav id="navbar" getGifs={getGifs} />
           <GifList/>
         </div>
         <Route path="/:id" component={GifDetailsContainer} />
@@ -44,4 +44,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { getGifs },
-)(MainContainer);
+)(Main);

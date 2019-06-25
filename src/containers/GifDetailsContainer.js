@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Route, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import {getGifById} from '../redux/selectors'
 
-class Details extends React.Component{
+export class Details extends React.Component{
     render(){
+
         return (
             <div id='detail'>
                Shows GIF Details

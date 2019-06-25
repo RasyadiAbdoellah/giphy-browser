@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { MainContainer } from './containers';
 import { Provider } from 'react-redux';
 import store from './redux/store'
 
-// Goal for auth is to have a custom landing page that stops ppl from using the app if they're not signed in.
-// on sign in it redirect to /home or /main or /dash.
-// on sign out it redirects back to /
-// signed in  users get autoredirected to /home or whatever if they navigate to /
-// TODOS:
-// figure out how to make custom signin widget and prevent initial redirect
-// figure out how to tie in auth status to redux
-// figure out routing logic
+//todos:
+//simplify components by moving mainContainer logic to app
+//remove route '/'
+
+//THINGS TO TEST
+// App renders search, gifList, gifs, gifDetail
+// shallow renders for search, gifDetail -> gifDetail will need to be provided with dummy data
+// test mount gifList
+
+//REDUX TESTS
+// test get actionCreators
+// test reducer output
+// check whether reducer output is correct
+
+//INTERACTION TESTS
+// search sends CORRECT dispatch with value of input
+// gifList renders right amt of children from dummy data
+// gifDetail gets correct gif when passed an id -> will need to make dummy store
+// renders load more button if response's totalCount > 25
 
 export default class App extends Component {
   render() {
@@ -20,10 +31,7 @@ export default class App extends Component {
         <Provider store={store}>
         <div className="App">
           <div className="flex-container">
-            <Route
-              path="/"
-              render={props => <MainContainer {...props} />}
-            />
+            <MainContainer/>
           </div>
         </div>
         </Provider>
