@@ -3,15 +3,14 @@ import { shallow } from 'enzyme';
 
 import * as rx from '../';
 
-import {Details} from '../'
-import {Main} from '../'
+import { Details } from '../';
+import { Main } from '../';
 
-
-//smoke tests
+//shallow tests
 it('renders without crashing', () => {
-  shallow(<Details/>)
+  shallow(<Details />);
 });
 
 it('renders without crashing', () => {
-  shallow(<Main />)
-})
+  shallow(<Main />);
+});

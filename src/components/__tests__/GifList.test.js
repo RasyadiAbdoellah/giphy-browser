@@ -16,6 +16,7 @@ describe('GifList', () => {
       expect(component.exists('[data-test="fail-message"]')).toBe(false);
     });
   });
+
   describe('on a failed req', () => {
     let component;
     const dummyProps = { getFail: true };
