@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import { MainContainer } from './containers';
-import { MainNav } from './components';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
@@ -25,19 +23,19 @@ import store from './redux/store';
 // gifDetail gets correct gif when passed an id -> will need to make dummy store
 // renders load more button if response's totalCount > 25
 
+//REACH GOALS
+// ROUTING
+
 export default class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <Provider store={store}>
-          <div className='App'>
-            <MainNav id='navbar' />
-            <div className='flex-container'>
-              <MainContainer />
-            </div>
+      <Provider store={store}>
+        <div className='App'>
+          <div className='flex-container'>
+            <MainContainer />
           </div>
-        </Provider>
-      </BrowserRouter>
+        </div>
+      </Provider>
     );
   }
 }

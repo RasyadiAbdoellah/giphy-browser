@@ -15,23 +15,9 @@ export class Main extends React.Component {
     return (
       <>
         <div id='main'>
-          <Route
-            path='/search/:query'
-            render={props => {
-              const {
-                match: { params }
-              } = props;
-              return <GifList gifs={gifList} req={reqGifSearch} params={params.query} {...props} />;
-            }}
-          />
-          <Route
-            path='/trending'
-            render={props => {
-              return <GifList gifs={gifList} req={reqGifTrending} {...props} />;
-            }}
-          />
+          <MainNav id='navbar' search={reqGifSearch} trending={reqGifTrending} />
+          <GifList gifs={gifList} />
         </div>
-        <Route path={['/search/:query/:id', '/trending/:id']} component={GifDetailsContainer} />
       </>
     );
   }

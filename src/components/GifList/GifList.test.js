@@ -6,7 +6,7 @@ import GifList from './GifList'; //imports from index.js
 describe('GifList', () => {
   describe('on a successful req', () => {
     let component;
-    const dummyProps = { gifs: [{ title: 'bla' }] };
+    const dummyProps = { gifs: [{ title: 'bla' }], req: jest.fn };
     beforeEach(() => {
       component = shallowLoad(GifList, dummyProps);
     });

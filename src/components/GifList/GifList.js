@@ -1,27 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 function GifCard(props) {
-  const { gif, match, params } = props;
+  const { gif, selectGif } = props;
 
   return (
-    <Link to={`${match.url}/${gif.id}`} className='gif-entry'>
+    <button className='gif-entry' onClick={() => selectGif(gif.id)}>
       <h1>{gif.title}</h1>
-    </Link>
+    </button>
   );
 }
 
 export default class GifList extends React.Component {
-  componentDidMount() {
-    const { req, params } = this.props;
-    req(params);
-  }
-  componentDidUpdate(prevProps) {
-    const { req, params } = this.props;
-    if (params !== prevProps.params) {
-      req(params);
-    }
-  }
   render() {
     const { gifs } = this.props;
     console.log(this.props);

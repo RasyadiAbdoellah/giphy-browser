@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink, Redirect } from 'react-router-dom';
 
 export default class MainNav extends React.Component {
   constructor(props) {
@@ -17,24 +16,19 @@ export default class MainNav extends React.Component {
 
   submitHandler = event => {
     event.preventDefault();
-    this.setState({ redirect: true });
-  };
-
-  postSubmit = () => {
-    this.setState({ redirect: false });
+    this.props.search(this.state.value);
   };
 
   //Main Navigation should render a search bar and filter options.
   render() {
     return (
       <nav id={this.props.id}>
-        {this.state.redirect && <Redirect to={`/search/${this.state.value}`} />}
         <form onSubmit={this.submitHandler}>
           <input type='text' onChange={this.changeHandler} />
           <button type='submit'>Search</button>
         </form>
-        <NavLink to='/random'>Random</NavLink>
-        <NavLink to='/trending'>Trending</NavLink>
+        <button>Random</button>
+        <button onClick={() => this.props.trending()}>Trending</button>
       </nav>
     );
   }
