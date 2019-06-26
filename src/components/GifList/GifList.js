@@ -14,7 +14,6 @@ function GifCard(props) {
 class GifList extends React.Component {
   render() {
     const { gifs } = this.props;
-    console.log(this.props);
     return (
       <div className='gif-collection'>
         {this.props.getFail && (

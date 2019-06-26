@@ -1,14 +1,14 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 //need propTypes for this one
 
-export default function GifDetails(props) {
+function GifDetails(props) {
   const { gif } = props;
   if (gif) {
     return (
       <>
-        <h1>{gif.name}</h1>
+        <h1>{gif.title}</h1>
         <h2>Details</h2>
         <ul className='gif-details'>
           {gif.data &&
@@ -26,3 +26,9 @@ export default function GifDetails(props) {
     return <div>Could not load GIF... Try refreshing</div>;
   }
 }
+
+GifDetails.propTypes = {
+  gif: PropTypes.object
+};
+
+export default GifDetails;

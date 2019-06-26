@@ -6,7 +6,7 @@ import { Route } from 'react-router-dom';
 
 import { reqGifSearch, reqGifTrending, selectGif } from '../redux/actions/gif';
 import { getGifsList, getStateGifs, getGifById } from '../redux/selectors';
-import { GifList, MainNav } from '../components';
+import { GifList, MainNav, GifDetails } from '../components';
 import { GifDetailsContainer } from '.';
 
 export class Main extends React.Component {
@@ -29,7 +29,11 @@ export class Main extends React.Component {
           <MainNav id='navbar' search={reqGifSearch} trending={reqGifTrending} />
           <GifList gifs={gifList} select={selectGif} />
         </div>
-        {selectedGif && <GifDetailsContainer gif={selectedGif} />}
+        {selectedGif && (
+          <div id='detail'>
+            <GifDetails gif={selectedGif} />
+          </div>
+        )}
       </>
     );
   }
@@ -41,9 +45,10 @@ function mapStateToProps(state) {
   const gifList = getGifsList(state);
   const gifIsGetting = getStateGifs(state).isGetting;
   const gifGetFailed = getStateGifs(state).getFailed;
-  const selectedGif = getGifById(getStateGifs.selectedId);
+  const selectedGif =
+    getStateGifs(state).selectedId && getGifById(state, getStateGifs(state).selectedId);
 
-  return { gifList, gifIsGetting, gifGetFailed };
+  return { gifList, gifIsGetting, gifGetFailed, selectedGif };
 }
 
 //exports the connected component
