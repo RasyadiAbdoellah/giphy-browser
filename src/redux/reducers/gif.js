@@ -1,4 +1,4 @@
-import * as actions from '../gifActionTypes';
+import * as gifAct from '../gifActionTypes';
 
 const initialState = {
   isGetting: false,
@@ -8,12 +8,13 @@ const initialState = {
   getFailed: false,
   errorMessage: '',
   allIds: [],
-  byId: {}
+  byId: {},
+  selectedId: ''
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case actions.isGetSearch: {
+    case gifAct.isGetSearch: {
       return Object.assign({}, state, {
         isGetting: true,
         isSearch: true,
@@ -21,7 +22,7 @@ export default function(state = initialState, action) {
         getFailed: false
       });
     }
-    case actions.isGetTrending: {
+    case gifAct.isGetTrending: {
       return Object.assign({}, state, {
         isGetting: true,
         isTrending: true,
@@ -29,7 +30,7 @@ export default function(state = initialState, action) {
         getFailed: false
       });
     }
-    case actions.getSuccess: {
+    case gifAct.getSuccess: {
       const { data } = action.payload;
       if (data && typeof data !== 'string') {
         const dataIds = data.map(gif => gif.id); //need to check gif data structure
@@ -72,7 +73,7 @@ export default function(state = initialState, action) {
         });
       }
     }
-    case actions.getFail: {
+    case gifAct.getFail: {
       return Object.assign({}, state, {
         isGetting: false,
         getFailed: true,
@@ -80,6 +81,9 @@ export default function(state = initialState, action) {
         isTrending: false,
         errorMessage: action.payload //Will need to doublecheck this
       });
+    }
+    case gifAct.selectGif: {
+      return Object.assign({}, state, { selectedId: action.payload });
     }
     default:
       return state;

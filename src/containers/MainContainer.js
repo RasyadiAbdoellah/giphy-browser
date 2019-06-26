@@ -4,8 +4,8 @@ import { Route } from 'react-router-dom';
 
 // import { RouteWithProps } from '../bin'
 
-import { reqGifSearch, reqGifTrending } from '../redux/actions/gif';
-import { getGifsList, getStateGifs } from '../redux/selectors';
+import { reqGifSearch, reqGifTrending, selectGif } from '../redux/actions/gif';
+import { getGifsList, getStateGifs, getGifById } from '../redux/selectors';
 import { GifList, MainNav } from '../components';
 import { GifDetailsContainer } from '.';
 
@@ -15,6 +15,7 @@ export class Main extends React.Component {
       gifList,
       gifIsGetting,
       gifGetFailed,
+      selectedGif,
       reqGifSearch,
       reqGifTrending,
       selectGif
@@ -26,8 +27,9 @@ export class Main extends React.Component {
             gifIsGetting // display loader when req is loading
           }
           <MainNav id='navbar' search={reqGifSearch} trending={reqGifTrending} />
-          <GifList gifs={gifList} />
+          <GifList gifs={gifList} select={selectGif} />
         </div>
+        {selectedGif && <GifDetailsContainer gif={selectedGif} />}
       </>
     );
   }
@@ -39,6 +41,7 @@ function mapStateToProps(state) {
   const gifList = getGifsList(state);
   const gifIsGetting = getStateGifs(state).isGetting;
   const gifGetFailed = getStateGifs(state).getFailed;
+  const selectedGif = getGifById(getStateGifs.selectedId);
 
   return { gifList, gifIsGetting, gifGetFailed };
 }
@@ -46,5 +49,5 @@ function mapStateToProps(state) {
 //exports the connected component
 export default connect(
   mapStateToProps,
-  { reqGifSearch, reqGifTrending }
+  { reqGifSearch, reqGifTrending, selectGif }
 )(Main);

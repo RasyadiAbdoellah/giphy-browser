@@ -1,16 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function GifCard(props) {
-  const { gif, selectGif } = props;
+  const { gif, select } = props;
 
   return (
-    <div className='gif-entry' onClick={() => selectGif(gif.id)}>
+    <div className='gif-entry' onClick={() => select(gif.id)}>
       <img src={gif.images.fixHeightSmall.url} />
     </div>
   );
 }
 
-export default class GifList extends React.Component {
+class GifList extends React.Component {
   render() {
     const { gifs } = this.props;
     console.log(this.props);
@@ -29,3 +30,10 @@ export default class GifList extends React.Component {
     );
   }
 }
+
+GifList.propTypes = {
+  gifs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  select: PropTypes.func.isRequired
+};
+
+export default GifList;

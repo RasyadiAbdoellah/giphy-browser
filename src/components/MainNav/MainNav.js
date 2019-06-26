@@ -1,17 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class MainNav extends React.Component {
+class MainNav extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: '',
-      redirect: false
+      value: ''
     };
   }
 
   changeHandler = event => {
-    this.setState({ value: event.target.value, redirect: false });
+    this.setState({ value: event.target.value });
   };
 
   submitHandler = event => {
@@ -33,3 +33,9 @@ export default class MainNav extends React.Component {
     );
   }
 }
+
+MainNav.propTypes = {
+  search: PropTypes.func.isRequired
+};
+
+export default MainNav;

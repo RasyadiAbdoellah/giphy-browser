@@ -73,3 +73,10 @@ export function reqGifTrending(page = 0, addParams) {
       });
   };
 }
+
+export function selectGif(id) {
+  return {
+    type: actions.selectGif,
+    payload: id
+  };
+}
