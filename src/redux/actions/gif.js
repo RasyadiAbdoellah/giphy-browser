@@ -6,7 +6,7 @@ import giphyClient from 'giphy-js-sdk-core';
 const client = giphyClient('2D5gTVuhBIQ2BLkOaKpPS9REFTTUuHMY');
 // const client = giphyClient();
 
-import axios from '../../axios';
+// import axios from '../../axios';
 
 //all actions are exported for testing purposes
 

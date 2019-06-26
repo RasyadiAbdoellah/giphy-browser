@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { MainContainer } from './containers';
+import { MainNav } from './components';
 import { Provider } from 'react-redux';
-import store from './redux/store'
+import store from './redux/store';
 
 //todos:
 //simplify components by moving mainContainer logic to app
@@ -29,11 +30,12 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <Provider store={store}>
-        <div className="App">
-          <div className="flex-container">
-            <MainContainer/>
+          <div className='App'>
+            <MainNav id='navbar' />
+            <div className='flex-container'>
+              <MainContainer />
+            </div>
           </div>
-        </div>
         </Provider>
       </BrowserRouter>
     );

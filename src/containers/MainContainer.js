@@ -4,27 +4,34 @@ import { Route } from 'react-router-dom';
 
 // import { RouteWithProps } from '../bin'
 
-import { getGifs } from '../redux/actions/gif';
+import { reqGifSearch, reqGifTrending } from '../redux/actions/gif';
 import { getGifsList, getStateGifs } from '../redux/selectors';
 import { GifList, MainNav } from '../components';
 import { GifDetailsContainer } from '.';
 
 export class Main extends React.Component {
   render() {
-    const {
-      gifList,
-      gifIsGetting,
-      gifGetFailed,
-      getGifs,
-      auth,
-    } = this.props;
+    const { gifList, gifIsGetting, gifGetFailed, reqGifSearch, reqGifTrending } = this.props;
     return (
       <>
-        <div id="main">
-          <MainNav id="navbar" getGifs={getGifs} />
-          <GifList/>
+        <div id='main'>
+          <Route
+            path='/search/:query'
+            render={props => {
+              const {
+                match: { params }
+              } = props;
+              return <GifList gifs={gifList} req={reqGifSearch} params={params.query} {...props} />;
+            }}
+          />
+          <Route
+            path='/trending'
+            render={props => {
+              return <GifList gifs={gifList} req={reqGifTrending} {...props} />;
+            }}
+          />
         </div>
-        <Route path="/:id" component={GifDetailsContainer} />
+        <Route path={['/search/:query/:id', '/trending/:id']} component={GifDetailsContainer} />
       </>
     );
   }
@@ -43,5 +50,5 @@ function mapStateToProps(state) {
 //exports the connected component
 export default connect(
   mapStateToProps,
-  { getGifs },
+  { reqGifSearch, reqGifTrending }
 )(Main);

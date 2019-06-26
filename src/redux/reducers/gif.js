@@ -36,7 +36,19 @@ export default function(state = initialState, action) {
         const gifsById = {};
 
         data.forEach(gif => {
-          gifsById[gif.id] = { ...gif }; //may need to clean res before sending to this step
+          const {
+            url,
+            bitly_gif_url,
+            bitly_url,
+            title,
+            id,
+            embed_url,
+            user,
+            images: { fixed_height_still, fixed_height_small_still, original }
+          } = gif;
+          const urls = { url, bitly_gif_url, bitly_url, embed_url };
+          const images = { fixed_height_still, fixed_height_small_still, original };
+          gifsById[gif.id] = { urls, id, title, user, images }; //may need to clean res before sending to this step
         });
         return Object.assign({}, state, {
           isGetting: false,
