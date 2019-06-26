@@ -1,20 +1,17 @@
-.recipe-collection {
+.gif-collection {
   display: flex;
   flex-flow: row wrap;
   justify-content: left;
   list-style: none;
-  
 }
-.recipe-card{
+.gif-entry {
   box-sizing: border-box;
   box-shadow: 0 2px 3px $light-gray;
-  width: 200px;
-  height: 200px;
-  margin: 1rem;
+  margin: 0.5rem;
   padding: 1rem;
   text-decoration: none;
 
-  &:hover{
+  &:hover {
     background-color: $lightest-gray;
   }
 }

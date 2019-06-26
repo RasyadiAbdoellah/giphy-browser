@@ -4,9 +4,9 @@ function GifCard(props) {
   const { gif, selectGif } = props;
 
   return (
-    <button className='gif-entry' onClick={() => selectGif(gif.id)}>
-      <h1>{gif.title}</h1>
-    </button>
+    <div className='gif-entry' onClick={() => selectGif(gif.id)}>
+      <img src={gif.images.fixHeightSmall.url} />
+    </div>
   );
 }
 

@@ -44,10 +44,14 @@ export default function(state = initialState, action) {
             id,
             embed_url,
             user,
-            images: { fixed_height_still, fixed_height_small_still, original }
+            images: { fixed_height_still, fixed_height_small, original }
           } = gif;
           const urls = { url, bitly_gif_url, bitly_url, embed_url };
-          const images = { fixed_height_still, fixed_height_small_still, original };
+          const images = {
+            fixHeightStill: fixed_height_still,
+            fixHeightSmall: fixed_height_small,
+            original
+          };
           gifsById[gif.id] = { urls, id, title, user, images }; //may need to clean res before sending to this step
         });
         return Object.assign({}, state, {

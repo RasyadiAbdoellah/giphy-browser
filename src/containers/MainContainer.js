@@ -11,10 +11,20 @@ import { GifDetailsContainer } from '.';
 
 export class Main extends React.Component {
   render() {
-    const { gifList, gifIsGetting, gifGetFailed, reqGifSearch, reqGifTrending } = this.props;
+    const {
+      gifList,
+      gifIsGetting,
+      gifGetFailed,
+      reqGifSearch,
+      reqGifTrending,
+      selectGif
+    } = this.props;
     return (
       <>
         <div id='main'>
+          {
+            gifIsGetting // display loader when req is loading
+          }
           <MainNav id='navbar' search={reqGifSearch} trending={reqGifTrending} />
           <GifList gifs={gifList} />
         </div>
