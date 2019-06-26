@@ -11,8 +11,8 @@ export default function GifDetails(props) {
         <h1>{gif.name}</h1>
         <h2>Details</h2>
         <ul className='gif-details'>
-          {gif.Ingredients &&
-            gif.Ingredients.map(ingredient => (
+          {gif.data &&
+            gif.data.map(ingredient => (
               <li className='detail-content' key={ingredient.name}>
                 <span>
                   {ingredient.val} {ingredient.scale} {ingredient.name}
