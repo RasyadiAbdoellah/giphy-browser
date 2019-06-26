@@ -1,14 +1,17 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallowLoad } from '../../TestUtils';
 import { GifDetails } from '..'; //imports all components. component name follows file name
 
-//smoke tests
+//shallow tests
 describe('GifDetails', () => {
+  let component;
   //dummy props to pass to component
   const props = {};
-  it('renders without crashing', () => {
-    shallow(<GifDetails />);
+  beforeEach(() => {
+    component = shallowLoad(GifDetails);
   });
+
+  it('renders without crashing', () => {});
 });
 
 //mount tests (for gifList behaviour when given data)
