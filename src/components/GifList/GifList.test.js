@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallowLoad } from '../../TestUtils';
-import { GifList } from '..'; //imports from index.js
+import GifList from './GifList'; //imports from index.js
 
 //shallow tests
 describe('GifList', () => {

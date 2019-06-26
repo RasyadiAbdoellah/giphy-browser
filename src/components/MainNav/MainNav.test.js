@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallowLoad } from '../../TestUtils';
-import { MainNav } from '..'; //imports from index.js
+import MainNav from './MainNav'; //imports from index.js
 
 //shallow tests
 describe('MainNav', () => {
