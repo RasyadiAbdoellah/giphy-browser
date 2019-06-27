@@ -27,10 +27,14 @@ function extractGifData(gif) {
 
   //extract objects from images
   const {
-    images: { fixed_height_small, original }
+    images: { fixed_height_small, fixed_height_small_still, original }
   } = gif;
   //set to new object with camelCase name
-  const images = { fixHeightSmall: fixed_height_small, original };
+  const images = {
+    fixHeightSmall: fixed_height_small,
+    fixHeightSmallStill: fixed_height_small_still,
+    original
+  };
 
   //extract other important info
   const { title, id, user } = gif;

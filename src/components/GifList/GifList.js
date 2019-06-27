@@ -4,25 +4,22 @@ import PropTypes from 'prop-types';
 function GifEntry(props) {
   const { gif, select } = props;
   const {
-    images: { fixHeightSmall }
+    images: { fixHeightSmall, fixHeightSmallStill }
   } = gif;
 
   //video has style prop so it can use dimension values in gif image data
   return (
     <div className='gif-entry' onClick={() => select(gif.id)}>
-      <video
-        autoPlay
-        loop
-        muted={true}
-        playsInline
+      <picture
         style={{
           height: `${fixHeightSmall.height}px`,
           width: `${fixHeightSmall.width}px`
         }}
       >
-        <source src={fixHeightSmall.mp4} type='video/mp4' />
-        <img src={fixHeightSmall.url} />
-      </video>
+        <source srcSet={fixHeightSmall.webp} media='(min-width: 600px)' />
+        <source srcSet={fixHeightSmall.url} media='(min-width: 600px)' />
+        <img src={fixHeightSmallStill.url} alt={gif.title} />
+      </picture>
     </div>
   );
 }
@@ -44,7 +41,7 @@ const gifPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
   images: PropTypes.shape({
     fixHeightSmall: PropTypes.shape({
-      mp4: PropTypes.string.isRequired,
+      webp: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired
     })
   })

@@ -11,10 +11,11 @@ describe('GifList', () => {
         title: 'bla',
         images: {
           fixHeightSmall: {
-            mp4:
-              'https://media1.giphy.com/media/l3fzM2wgd6TygHbYA/100.mp4?cid=fedd91645d143eb3316b526859d10201&rid=100.mp4',
-            url:
-              'https://media1.giphy.com/media/l3fzM2wgd6TygHbYA/100.gif?cid=fedd91645d143eb3316b526859d10201&rid=100.gif'
+            webp: 'testWebPURL',
+            url: 'testGifURL'
+          },
+          fixHeightSmallStill: {
+            url: 'testStillURL'
           }
         }
       }
@@ -30,9 +31,10 @@ describe('GifList', () => {
   //mount test to check children
   describe('displays a GifEntry when provided with an array of gifs', () => {
     //mount component before each test
-    let component;
+    let component, source;
     beforeEach(() => {
       component = mountLoad(GifList, dummyProps);
+      source = component.find('source');
     });
 
     //mounts without issue
@@ -46,18 +48,23 @@ describe('GifList', () => {
 
     //test child specifics
     describe('GifEntry renders gifs', () => {
-      //uses mp4 url
-      it('has source tag with valid url', () => {
+      //uses webp url
+      it('has two source tags', () => {
         expect(component.exists('source')).toBe(true);
-        const source = component.find('source');
-        expect(source.prop('src')).toEqual(dummyProps.gifs[0].images.fixHeightSmall.mp4);
+        expect(source.length).toEqual(2);
+      });
+      it('first source tag is webp url', () => {
+        expect(source.at(0).prop('srcSet')).toEqual(dummyProps.gifs[0].images.fixHeightSmall.webp);
+      });
+      it('second source tag is gif url', () => {
+        expect(source.at(1).prop('srcSet')).toEqual(dummyProps.gifs[0].images.fixHeightSmall.url);
       });
 
       //uses gif fallback url
-      it('has gif fallback with valid url', () => {
-        expect(component.exists('img')).toBe(true);
+      it('has fallback with valid url', () => {
         const img = component.find('img');
-        expect(img.prop('src')).toEqual(dummyProps.gifs[0].images.fixHeightSmall.url);
+        expect(component.exists('img')).toBe(true);
+        expect(img.prop('src')).toEqual(dummyProps.gifs[0].images.fixHeightSmallStill.url);
       });
     });
 
