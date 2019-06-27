@@ -1,23 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { GifDetails } from '../components';
 
-import {getGifById} from '../redux/selectors'
+import { getGifById, getStateGifs } from '../redux/selectors';
 
-export class Details extends React.Component{
-    render(){
-
-        return (
-            <div id='detail'>
-               Shows GIF Details
-            </div>
-        )
-    }
+export function Details(props) {
+  return <GifDetails gif={props.gif} />;
 }
 
-function mapStateToProps(state, { match:{ params: { id } } }) {
-    const gif = getGifById(state, id)
-    return { gif }
+function mapStateToProps(state) {
+  const gif = getStateGifs(state).selectedId && getGifById(state, getStateGifs(state).selectedId);
+  return { gif };
 }
 
-export default connect(mapStateToProps, {  })(Details)
+export default connect(
+  mapStateToProps,
+  {}
+)(Details);

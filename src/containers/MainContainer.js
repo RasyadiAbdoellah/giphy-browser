@@ -23,11 +23,11 @@ export class Main extends React.Component {
     return (
       <>
         <div id='main'>
-          {
-            gifIsGetting // display loader when req is loading
-          }
           <MainNav id='navbar' search={reqGifSearch} trending={reqGifTrending} />
-          <GifList gifs={gifList} select={selectGif} />
+          {
+            //UI message based on isGetting, gifGetFailed values
+          }
+          {!gifIsGetting && !gifGetFailed && <GifList gifs={gifList} select={selectGif} />}
         </div>
         {selectedGif && (
           <div id='detail'>
@@ -39,9 +39,9 @@ export class Main extends React.Component {
   }
 }
 
-//the state mapped to props.Gifs is actually formatted through selectors.js
-//getGifsList returns an array of gif objects
+//populate props that will be passed down to components
 function mapStateToProps(state) {
+  //all fns below are imported from  redux/selectors
   const gifList = getGifsList(state);
   const gifIsGetting = getStateGifs(state).isGetting;
   const gifGetFailed = getStateGifs(state).getFailed;
