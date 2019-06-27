@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 
 // import { RouteWithProps } from '../bin'
 
-import { reqGifSearch, reqGifTrending, selectGif } from '../redux/actions/gif';
+import { reqGifSearch, reqGifTrending, selectGif, getMore } from '../redux/actions/gif';
 import { getGifsList, getStateGifs, getGifById } from '../redux/selectors';
 import { GifList, MainNav, GifDetails } from '../components';
 import { GifDetailsContainer } from '.';
@@ -29,6 +29,9 @@ export class Main extends React.Component {
           }
           {!gifIsGetting && !gifGetFailed && <GifList gifs={gifList} select={selectGif} />}
         </div>
+        {(!gifList || gifList.length !== 0) && (
+          <button onClick={() => this.props.getMore()}>Get More</button>
+        )}
         {selectedGif && (
           <div id='detail'>
             <GifDetails gif={selectedGif} />
@@ -54,5 +57,5 @@ function mapStateToProps(state) {
 //exports the connected component
 export default connect(
   mapStateToProps,
-  { reqGifSearch, reqGifTrending, selectGif }
+  { reqGifSearch, reqGifTrending, selectGif, getMore }
 )(Main);

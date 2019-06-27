@@ -6,8 +6,6 @@ import giphyClient from 'giphy-js-sdk-core';
 const client = giphyClient('2D5gTVuhBIQ2BLkOaKpPS9REFTTUuHMY');
 // const client = giphyClient();
 
-// import axios from '../../axios';
-
 //all actions are exported for testing purposes
 
 //getSearch will switch IS_GETTING and IS_SEARCH to true
@@ -28,6 +26,12 @@ export function receiveGifs(response) {
   };
 }
 
+export function appendGifs(response) {
+  return {
+    type: actions.isAppend,
+    payload: response
+  };
+}
 //called on error. sends error over and flips IS_FAIL
 export function getFail(error) {
   return {
@@ -36,41 +40,80 @@ export function getFail(error) {
   };
 }
 
-export function reqGifSearch(query, page = 0, addParams) {
+export function setReqType(type, query = null) {
+  return {
+    type: actions.reqType,
+    payload: { type, query }
+  };
+}
+
+// REQUEST TO API IS DONE HERE
+
+// decider is a helper function that determines if receiveGif should be passed with an append action
+function decider(dispatch, addParams, res) {
+  if (addParams.offset) {
+    dispatch(appendGifs(res));
+  } else {
+    dispatch(receiveGifs(res));
+  }
+}
+
+export function reqGifSearch(query, addParams = {}) {
   return function(dispatch) {
-    const params = { q: query, offset: page * 25, ...addParams };
-    dispatch(getSearch());
+    if (!addParams.offset) {
+      dispatch(getSearch());
+    }
     return client
-      .search('gifs', params)
+      .search('gifs', { q: query, ...addParams })
       .then(res => {
-        // console.log(res);
-        dispatch(receiveGifs(res));
+        //if offset is provided this means its a req to load more gifs
+        decider(dispatch, addParams, res);
+        dispatch(setReqType('search', query));
         return res;
       })
       .catch(err => {
-        // console.log(err);
+        console.log(err);
         dispatch(getFail(err));
+        dispatch(setReqType('failed'));
         return err;
       });
   };
 }
 
-export function reqGifTrending(page = 0, addParams) {
+export function reqGifTrending(addParams = {}) {
   return function(dispatch) {
-    const params = { offset: page * 25, ...addParams };
-    dispatch(getTrending());
+    if (!addParams.offset) {
+      dispatch(getTrending());
+    }
     return client
-      .trending('gifs', params)
+      .trending('gifs', addParams)
       .then(res => {
-        // console.log(res);
-        dispatch(receiveGifs(res));
+        decider(dispatch, addParams, res);
+        dispatch(setReqType('trending'));
         return res;
       })
       .catch(err => {
-        // console.log(err);
+        console.log(err);
         dispatch(getFail(err));
+        dispatch(setReqType('failed'));
         return err;
       });
+  };
+}
+
+export function getMore() {
+  return async function(dispatch, getState) {
+    const {
+      gifs: { reqType, queryStr, pagination }
+    } = getState();
+    const newOffset = { offset: pagination.offset + pagination.count };
+    if (reqType === 'search') {
+      return await dispatch(reqGifSearch(queryStr, newOffset));
+    }
+
+    if (reqType === 'trending') {
+      return await dispatch(reqGifTrending(newOffset));
+    }
   };
 }
 

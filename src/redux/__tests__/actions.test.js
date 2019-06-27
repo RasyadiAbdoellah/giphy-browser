@@ -8,16 +8,16 @@ const mockStore = configureStore(middlewares);
 describe('reqGifSearch', () => {
   it('should search for 1 cat gif', () => {
     const store = mockStore({});
-    return store.dispatch(gifAct.reqGifSearch('cats', null, { limit: 1 })).then(data => {
+    return store.dispatch(gifAct.reqGifSearch('cats', { limit: 1 })).then(data => {
       const actions = store.getActions();
       expect(actions[0]).toEqual(gifAct.getSearch());
       expect(actions[1].type).toEqual(gifAct.receiveGifs().type);
       expect(actions[1].payload).toBeDefined();
-      expect(actions[1].payload.pagination.count).toBe(1);
+      expect(actions[1].payload.pagination.count).toEqual(1);
     });
   });
 
-  it('should trigger getFail with a bad req', () => {
+  xit('should trigger getFail with a bad req', () => {
     const store = mockStore({});
     return store.dispatch(gifAct.reqGifSearch()).then(data => {
       const actions = store.getActions();
@@ -26,12 +26,28 @@ describe('reqGifSearch', () => {
       expect(actions[1].payload).toBeDefined();
     });
   });
+
+  it('getMore should append data', () => {
+    const store = mockStore({
+      gifs: {
+        reqType: 'search',
+        queryStr: 'cats',
+        pagination: { offset: 0, count: 1 }
+      }
+    });
+    store.dispatch(gifAct.getMore()).then(() => {
+      const actions = store.getActions();
+      expect(actions[0]).toEqual(gifAct.getSearch());
+      expect(actions[1].type).toEqual(gifAct.appendGifs().type);
+      expect(actions[1].payload.pagination.offset).toEqual(1);
+    });
+  });
 });
 
 describe('reqGifTrending', () => {
   it('should get 1 gif from trending', () => {
     const store = mockStore({});
-    return store.dispatch(gifAct.reqGifTrending(null, { limit: 1 })).then(data => {
+    return store.dispatch(gifAct.reqGifTrending({ limit: 1 })).then(data => {
       const actions = store.getActions();
       expect(actions[0]).toEqual(gifAct.getTrending());
       expect(actions[1].type).toEqual(gifAct.receiveGifs().type);
@@ -52,3 +68,5 @@ describe('reqGifTrending', () => {
     });
   });
 });
+
+describe('getMore', () => {});

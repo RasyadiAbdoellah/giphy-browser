@@ -1,6 +1,7 @@
 import * as gifAct from '../gifActionTypes';
 
-const initialState = {
+//exported for testing
+export const initialState = {
   isGetting: false,
   isSearch: false,
   isTrending: false,
@@ -9,9 +10,74 @@ const initialState = {
   errorMessage: '',
   allIds: [],
   byId: {},
-  selectedId: ''
+  selectedId: '',
+  curPage: 0,
+  queryStr: '',
+  reqType: '',
+  pagination: {}
 };
 
+//Function to be called in forEach in processRes.
+//Returns new gifObj with just the important bits
+function extractGifData(gif) {
+  //extract urls
+  const { url, bitly_gif_url, bitly_url, embed_url } = gif;
+  //set to new object
+  const urls = { url, bitly_gif_url, bitly_url, embed_url };
+
+  //extract objects from images
+  const {
+    images: { fixed_height_small, original }
+  } = gif;
+  //set to new object with camelCase name
+  const images = { fixHeightSmall: fixed_height_small, original };
+
+  //extract other important info
+  const { title, id, user } = gif;
+
+  return { title, id, user, urls, images };
+}
+
+//Processes response into usable data, used in both receiveGifs and appendGifs
+function processRes(payload, state, shouldAppend = false) {
+  let allIds, byId;
+  const { data, pagination } = payload;
+  if (data && typeof data !== 'string') {
+    if (!shouldAppend) {
+      allIds = data.map(gif => gif.id);
+      byId = {};
+    } else {
+      console.log(state);
+      allIds = [...state.allIds, ...data.map(gif => gif.id)];
+      byId = { ...state.byId };
+    }
+
+    //transform data to what is needed
+    data.forEach(gif => {
+      byId[gif.id] = extractGifData(gif);
+    });
+
+    return Object.assign({}, state, {
+      isGetting: false,
+      getSuccess: true,
+      isSearch: false,
+      isTrending: false,
+      allIds,
+      byId,
+      pagination: pagination
+    });
+  } else {
+    return Object.assign({}, state, {
+      isGetting: false,
+      getFailed: true,
+      isSearch: false,
+      isTrending: false,
+      errorMessage: payload // This is to capture if a 200 is sent but nothing is there.
+    });
+  }
+}
+
+// reducer function below
 export default function(state = initialState, action) {
   switch (action.type) {
     case gifAct.isGetSearch: {
@@ -31,47 +97,10 @@ export default function(state = initialState, action) {
       });
     }
     case gifAct.getSuccess: {
-      const { data } = action.payload;
-      if (data && typeof data !== 'string') {
-        const dataIds = data.map(gif => gif.id); //need to check gif data structure
-        const gifsById = {};
-
-        data.forEach(gif => {
-          const {
-            url,
-            bitly_gif_url,
-            bitly_url,
-            title,
-            id,
-            embed_url,
-            user,
-            images: { fixed_height_still, fixed_height_small, original }
-          } = gif;
-          const urls = { url, bitly_gif_url, bitly_url, embed_url };
-          const images = {
-            fixHeightStill: fixed_height_still,
-            fixHeightSmall: fixed_height_small,
-            original
-          };
-          gifsById[gif.id] = { urls, id, title, user, images }; //may need to clean res before sending to this step
-        });
-        return Object.assign({}, state, {
-          isGetting: false,
-          getSuccess: true,
-          isSearch: false,
-          isTrending: false,
-          allIds: dataIds,
-          byId: gifsById
-        });
-      } else {
-        return Object.assign({}, state, {
-          isGetting: false,
-          getFailed: true,
-          isSearch: false,
-          isTrending: false,
-          errorMessage: action.payload // This is to capture if a 200 is sent but nothing is there.
-        });
-      }
+      return processRes(action.payload, state);
+    }
+    case gifAct.isAppend: {
+      return processRes(action.payload, state, true);
     }
     case gifAct.getFail: {
       return Object.assign({}, state, {
@@ -82,8 +111,17 @@ export default function(state = initialState, action) {
         errorMessage: action.payload //Will need to doublecheck this
       });
     }
+    case gifAct.reqType: {
+      return Object.assign({}, state, {
+        reqType: action.payload.type,
+        queryStr: action.payload.query
+      });
+    }
     case gifAct.selectGif: {
       return Object.assign({}, state, { selectedId: action.payload });
+    }
+    case gifAct.clearGif: {
+      return Object.assign({}, state, { selectedId: '' });
     }
     default:
       return state;
