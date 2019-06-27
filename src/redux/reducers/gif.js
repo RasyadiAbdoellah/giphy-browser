@@ -23,7 +23,7 @@ function extractGifData(gif) {
   //extract urls
   const { url, bitly_gif_url, bitly_url, embed_url } = gif;
   //set to new object
-  const urls = { url, bitly_gif_url, bitly_url, embed_url };
+  const urls = { url, bitlyGifUrl: bitly_gif_url, bitlyUrl: bitly_url, embedUrl: embed_url };
 
   //extract objects from images
   const {

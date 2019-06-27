@@ -8,17 +8,14 @@ function GifDetails(props) {
   if (gif) {
     return (
       <>
-        <h1>{gif.title}</h1>
+        <picture>
+          <source srcSet={gif.images.original.webp} />
+          <img src={gif.images.original.gif} alt={gif.titile} />
+        </picture>
         <h2>Details</h2>
+        <h3>{gif.title}</h3>
         <ul className='gif-details'>
-          {gif.data &&
-            gif.data.map(ingredient => (
-              <li className='detail-content' key={ingredient.name}>
-                <span>
-                  {ingredient.val} {ingredient.scale} {ingredient.name}
-                </span>
-              </li>
-            ))}
+          <li>Embed URL: {gif.urls.embedUrl}</li>
         </ul>
       </>
     );
