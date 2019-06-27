@@ -31,9 +31,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <div className='App'>
-          <div className='flex-container'>
-            <MainContainer />
-          </div>
+          <MainContainer />
         </div>
       </Provider>
     );

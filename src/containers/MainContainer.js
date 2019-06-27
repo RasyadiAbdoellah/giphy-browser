@@ -22,21 +22,23 @@ export class Main extends React.Component {
     } = this.props;
     return (
       <>
-        <div id='main'>
-          <MainNav id='navbar' search={reqGifSearch} trending={reqGifTrending} />
-          {
-            //UI message based on isGetting, gifGetFailed values
-          }
-          {!gifIsGetting && !gifGetFailed && <GifList gifs={gifList} select={selectGif} />}
-        </div>
-        {(!gifList || gifList.length !== 0) && (
-          <button onClick={() => this.props.getMore()}>Get More</button>
-        )}
-        {selectedGif && (
-          <div id='detail'>
-            <GifDetails gif={selectedGif} />
+        <MainNav id='navbar' search={reqGifSearch} trending={reqGifTrending} />
+        <div className='flex-container'>
+          <div id='main'>
+            {
+              //UI message based on isGetting, gifGetFailed values
+            }
+            {!gifIsGetting && !gifGetFailed && <GifList gifs={gifList} select={selectGif} />}
+            {(!gifList || gifList.length !== 0) && (
+              <button onClick={() => this.props.getMore()}>Get More</button>
+            )}
           </div>
-        )}
+          {selectedGif && (
+            <div id='detail'>
+              <GifDetails gif={selectedGif} />
+            </div>
+          )}
+        </div>
       </>
     );
   }

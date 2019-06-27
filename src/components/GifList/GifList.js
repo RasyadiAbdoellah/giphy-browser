@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 function GifEntry(props) {
   const { gif, select } = props;
   const {
-    images: { fixHeightSmall, fixHeightSmallStill }
+    images: { fixWidthSmall, fixWidthSmallStill }
   } = gif;
 
   //video has style prop so it can use dimension values in gif image data
@@ -12,13 +12,13 @@ function GifEntry(props) {
     <div className='gif-entry' onClick={() => select(gif.id)}>
       <picture
         style={{
-          height: `${fixHeightSmall.height}px`,
-          width: `${fixHeightSmall.width}px`
+          height: `${fixWidthSmall.height}px`,
+          width: `${fixWidthSmall.width}px`
         }}
       >
-        <source srcSet={fixHeightSmall.webp} media='(min-width: 600px)' />
-        <source srcSet={fixHeightSmall.url} media='(min-width: 600px)' />
-        <img src={fixHeightSmallStill.url} alt={gif.title} />
+        <source srcSet={fixWidthSmall.webp} media='(min-width: 600px)' />
+        <source srcSet={fixWidthSmall.url} media='(min-width: 600px)' />
+        <img src={fixWidthSmallStill.url} alt={gif.title} />
       </picture>
     </div>
   );
@@ -40,7 +40,7 @@ class GifList extends React.Component {
 const gifPropType = PropTypes.shape({
   id: PropTypes.string.isRequired,
   images: PropTypes.shape({
-    fixHeightSmall: PropTypes.shape({
+    fixWidthSmall: PropTypes.shape({
       webp: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired
     })

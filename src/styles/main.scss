@@ -39,5 +39,8 @@ html {
   left: 0;
   z-index: 0;
   padding: 20px;
-  align-items: flex-start;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
