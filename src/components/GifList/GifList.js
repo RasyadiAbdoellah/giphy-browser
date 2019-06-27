@@ -1,12 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function GifCard(props) {
+function GifEntry(props) {
   const { gif, select } = props;
+  const {
+    images: { fixHeightSmall }
+  } = gif;
 
+  //video has style prop so it can use dimension values in gif image data
   return (
     <div className='gif-entry' onClick={() => select(gif.id)}>
-      <img src={gif.images.fixHeightSmall.url} />
+      <video
+        autoPlay
+        loop
+        muted={true}
+        playsInline
+        style={{
+          height: `${fixHeightSmall.height}px`,
+          width: `${fixHeightSmall.width}px`
+        }}
+      >
+        <source src={fixHeightSmall.mp4} type='video/mp4' />
+        <img src={fixHeightSmall.url} />
+      </video>
     </div>
   );
 }
@@ -16,22 +32,26 @@ class GifList extends React.Component {
     const { gifs } = this.props;
     return (
       <div className='gif-collection'>
-        {this.props.getFail && (
-          <div data-test='fail-message'>
-            <h3>Oops! Something went wrong... </h3>
-          </div>
-        )}
-        {!this.props.getFail &&
-          gifs.map(gif => {
-            return <GifCard key={gif.id} gif={gif} {...this.props} />;
-          })}
+        {gifs.map(gif => {
+          return <GifEntry key={gif.id} gif={gif} {...this.props} />;
+        })}
       </div>
     );
   }
 }
 
+const gifPropType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  images: PropTypes.shape({
+    fixHeightSmall: PropTypes.shape({
+      mp4: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired
+    })
+  })
+});
+
 GifList.propTypes = {
-  gifs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  gifs: PropTypes.arrayOf(gifPropType).isRequired,
   select: PropTypes.func.isRequired
 };
 
