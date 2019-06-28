@@ -65,10 +65,10 @@ function processRes(payload, state, shouldAppend = false) {
       data.forEach(gif => {
         byId[gif.id] = extractGifData(gif);
       });
-    } else if (data.data) {
-      // console.log(data);
-      allIds = [data.data.id];
-      byId[data.data.id] = extractGifData(data.data);
+    } else {
+      console.log(data);
+      allIds = [data.id];
+      byId[data.id] = extractGifData(data);
     }
     return Object.assign({}, state, {
       isGetting: false,
@@ -84,23 +84,6 @@ function processRes(payload, state, shouldAppend = false) {
       errorMessage: payload // This is to capture if a 200 is sent but nothing is there.
     });
   }
-}
-
-//Function below is to deal with random Gifs.
-//for some strange reason the giphy SDK sends back data that's in a different shape than the usual gif Object
-//Instead, id is in images, no embed url is given,
-function parseRandom(payload, state) {
-  let allIds,
-    byId = {};
-  const { data } = payload;
-  if (data) {
-  }
-  return Object.assign({}, state, {
-    isGetting: false,
-    getSuccess: true,
-    allIds,
-    byId
-  });
 }
 
 // reducer function below

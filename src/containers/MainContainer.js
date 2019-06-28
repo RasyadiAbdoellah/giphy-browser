@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 
 // import { RouteWithProps } from '../bin'
 
-import { apiCall, selectGif, getMore, getRandom, clearGif } from '../redux/actions/gif';
+import { apiCall, selectGif, getMore, clearGif } from '../redux/actions/gif';
 import { getGifsList, getStateGifs, getGifById } from '../redux/selectors';
 import { GifList, MainNav, GifDetails } from '../components';
 import { GifDetailsContainer } from '.';
@@ -19,8 +19,7 @@ export class Main extends React.Component {
       queryType,
       gifIsGetting,
       gifGetFailed,
-      apiCall,
-      getRandom
+      apiCall
     } = this.props;
 
     //Create fragments. This is to make things more readable
@@ -34,7 +33,7 @@ export class Main extends React.Component {
     );
     return (
       <>
-        <MainNav id='navbar' apiCall={apiCall} getRandom={getRandom} />
+        <MainNav id='navbar' apiCall={apiCall} />
         <div className='flex-container'>
           {queryType !== 'random' && (
             <div id='main'>
@@ -72,5 +71,5 @@ function mapStateToProps(state) {
 //exports the connected component
 export default connect(
   mapStateToProps,
-  { apiCall, getMore, selectGif, getRandom, clearGif }
+  { apiCall, getMore, selectGif, clearGif }
 )(Main);

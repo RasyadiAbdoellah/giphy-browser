@@ -1,13 +1,11 @@
 import * as actions from '../gifActionTypes';
 
-//both are needed as search and trending use the giphy api sdk, while random uses axios
 import giphyClient from 'giphy-js-sdk-core';
-import axios from 'axios';
-
+//switch apiCall to use axios due to giphyClient being finnicky
+import Axios from 'axios';
+const axios = Axios.create({ baseURL: 'https://api.giphy.com/v1/gifs/' });
 const API_KEY = '2D5gTVuhBIQ2BLkOaKpPS9REFTTUuHMY';
-const client = giphyClient(API_KEY); // comment out api key and uncomment empty giphyClient to test fail actions
-// const client = giphyClient();
-const baseParams = { rating: 'g' }; //base params are so all queries return g rated gifs
+const baseParams = { api_key: API_KEY, rating: 'g' }; //base params are so all queries return g rated gifs
 
 //all actions are exported for testing purposes
 
@@ -86,34 +84,16 @@ export function apiCall(queryType, query = null, addParams = {}) {
     }
 
     try {
-      const res = await client[queryType]('gifs', { q: query, ...baseParams, ...addParams });
-      dispatch(setReqType(queryType, query));
-      // console.log(res);
-      resDecider(dispatch, addParams, res);
-      //if offset is provided this means its a req to load more gifs
-      return res;
-    } catch (err) {
-      console.log(err);
-      dispatch(getFail(err));
-      dispatch(setReqType('failed'));
-      return err;
-    }
-  };
-}
+      const res = await axios(queryType, { params: { q: query, ...baseParams, ...addParams } });
 
-export function getRandom() {
-  //seperate api call for random is needed because SDK client.random response does not match gif object schema
-  return async dispatch => {
-    dispatch(clearGif());
-    dispatch(isGetting());
-    try {
-      const res = await axios.get(
-        `https://api.giphy.com/v1/gifs/random?api_key=${API_KEY}&tag=&rating=G`
-      );
-      dispatch(setReqType('random'));
+      // with giphClient the req looks like: client[queryType]('gifs', { q: query, ...baseParams, ...addParams });
       // console.log(res);
-      resDecider(dispatch, {}, res);
-      dispatch(selectGif(res.data.data.id));
+      dispatch(setReqType(queryType, query));
+      resDecider(dispatch, addParams, res.data);
+      if (queryType === 'random') {
+        dispatch(selectGif(res.data.data.id));
+      }
+      //if offset is provided this means its a req to load more gifs
       return res;
     } catch (err) {
       console.log(err);
