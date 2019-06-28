@@ -65,8 +65,10 @@ function processRes(payload, state, shouldAppend = false) {
       data.forEach(gif => {
         byId[gif.id] = extractGifData(gif);
       });
-    } else {
-      return parseRandom(payload, state);
+    } else if (data.data) {
+      // console.log(data);
+      allIds = [data.data.id];
+      byId[data.data.id] = extractGifData(data.data);
     }
     return Object.assign({}, state, {
       isGetting: false,
@@ -92,8 +94,6 @@ function parseRandom(payload, state) {
     byId = {};
   const { data } = payload;
   if (data) {
-    allIds = [data.images.id];
-    byId[data.images.id] = { id: data.images.id, ...extractGifData(data) };
   }
   return Object.assign({}, state, {
     isGetting: false,
