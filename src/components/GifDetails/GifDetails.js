@@ -8,7 +8,7 @@ function GifDetails(props) {
   if (gif) {
     return (
       <>
-        <video loop muted autoPlay controls playsInline>
+        <video loop muted autoPlay controls playsInline key={gif.id}>
           <source src={gif.images.original.mp4} />
         </video>
         <h2>Details</h2>

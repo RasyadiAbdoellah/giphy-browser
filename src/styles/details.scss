@@ -1,16 +1,16 @@
 // Detail is a third of the full desktop page.
-// Since the top level container is flex nowrap, main and detail will take 50% of the screen evenly.
-// Setting detail to 60% will equal to 30% of the screen since 30% of 100 is 60% of 50.
 #detail {
   flex: 1 1 0;
-  min-width: 30%;
-  max-width: 30%;
+  min-width: 40%;
+  max-width: 40%;
   right: 0;
   padding: 20px;
-  height: 100%;
-  position: sticky;
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   top: 0;
-  picture source + img {
+  video,
+  video source {
     width: 100%;
   }
 }

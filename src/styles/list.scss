@@ -4,6 +4,8 @@
   align-items: center;
   justify-content: center;
   list-style: none;
+  max-height: 85vh;
+  overflow-y: auto;
 }
 .gif-entry {
   box-sizing: border-box;
