@@ -7,34 +7,48 @@ html {
 .flex-container {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  justify-content: center;
   height: 100%;
 }
 
 #navbar {
   width: 100%;
   display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
-  * input,
-  * button {
-    padding: 0.5rem 1rem;
+  align-items: center;
+  form,
+  div {
+    padding: 1rem;
+    display: flex;
   }
-  *button {
+
+  input,
+  button {
+    padding: 0.5rem 1rem;
+    font-size: 100%;
     display: block;
     text-decoration: none;
     border: solid 1px $dark-gray;
-    border-right: none;
     background: white;
-    &:first-of-type {
+    border-radius: 5px;
+  }
+  form {
+    :first-child {
       border-radius: 5px 0 0 5px;
-      margin-left: 1rem;
     }
-    &:last-of-type {
+    :last-child {
       border-radius: 0 5px 5px 0;
-      border: solid 1px $dark-gray;
+      border-left: none;
     }
+  }
+  div > button {
+    border-radius: 50px;
+    margin: 0 1rem;
+    background-color: $dark-gray;
+    color: $text-light;
     &:hover {
-      background-color: $lightest-gray;
+      background-color: $gray;
     }
   }
 }

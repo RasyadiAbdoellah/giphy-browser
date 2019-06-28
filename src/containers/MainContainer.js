@@ -26,7 +26,7 @@ export class Main extends React.Component {
     const gifReqStatus = !gifIsGetting && !gifGetFailed;
     const notRandom = queryType !== 'random';
     const gifListFragment = gifReqStatus && notRandom && (
-      <GifList gifs={gifList} select={selectGif} />
+      <GifList gifs={gifList} select={selectGif} selectedId={selectedGif && selectedGif.id} />
     );
     const getMoreButton = (!gifList || gifList.length !== 0) && notRandom && (
       <button onClick={() => this.props.getMore()}>Load More</button>
