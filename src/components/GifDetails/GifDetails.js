@@ -8,10 +8,9 @@ function GifDetails(props) {
   if (gif) {
     return (
       <>
-        <picture>
-          <source srcSet={gif.images.original.webp} />
-          <img src={gif.images.original.gif} alt={gif.titile} />
-        </picture>
+        <video loop muted autoPlay controls playsInline>
+          <source src={gif.images.original.mp4} />
+        </video>
         <h2>Details</h2>
         <h3>{gif.title}</h3>
         <ul className='gif-details'>

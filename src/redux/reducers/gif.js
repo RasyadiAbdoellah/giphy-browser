@@ -13,7 +13,7 @@ export const initialState = {
   selectedId: '',
   curPage: 0,
   queryStr: '',
-  reqType: '',
+  queryType: '',
   pagination: {}
 };
 
@@ -121,9 +121,9 @@ export default function(state = initialState, action) {
         errorMessage: action.payload //Will need to doublecheck this
       });
     }
-    case gifAct.reqType: {
+    case gifAct.queryType: {
       return Object.assign({}, state, {
-        reqType: action.payload.type,
+        queryType: action.payload.type,
         queryStr: action.payload.query
       });
     }

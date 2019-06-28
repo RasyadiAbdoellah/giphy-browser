@@ -13,13 +13,16 @@ export class Main extends React.Component {
   render() {
     const {
       gifList,
-      gifIsGetting,
-      gifGetFailed,
       selectedGif,
       reqGifSearch,
       reqGifTrending,
-      selectGif
+      selectGif,
+      queryType,
+      gifIsGetting,
+      gifGetFailed
     } = this.props;
+    const gifReqStatus = !gifIsGetting && !gifGetFailed;
+    const notRandom = queryType !== 'random';
     return (
       <>
         <MainNav id='navbar' search={reqGifSearch} trending={reqGifTrending} />
@@ -28,8 +31,8 @@ export class Main extends React.Component {
             {
               //UI message based on isGetting, gifGetFailed values
             }
-            {!gifIsGetting && !gifGetFailed && <GifList gifs={gifList} select={selectGif} />}
-            {(!gifList || gifList.length !== 0) && (
+            {gifReqStatus && notRandom && <GifList gifs={gifList} select={selectGif} />}
+            {(!gifList || gifList.length !== 0) && notRandom && (
               <button onClick={() => this.props.getMore()}>Get More</button>
             )}
           </div>
@@ -52,8 +55,9 @@ function mapStateToProps(state) {
   const gifGetFailed = getStateGifs(state).getFailed;
   const selectedGif =
     getStateGifs(state).selectedId && getGifById(state, getStateGifs(state).selectedId);
+  const queryType = getStateGifs(state).queryType;
 
-  return { gifList, gifIsGetting, gifGetFailed, selectedGif };
+  return { gifList, gifIsGetting, gifGetFailed, selectedGif, queryType };
 }
 
 //exports the connected component

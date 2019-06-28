@@ -42,7 +42,7 @@ export function getFail(error) {
 
 export function setReqType(type, query = null) {
   return {
-    type: actions.reqType,
+    type: actions.queryType,
     payload: { type, query }
   };
 }
@@ -104,14 +104,14 @@ export function reqGifTrending(addParams = {}) {
 export function getMore() {
   return async function(dispatch, getState) {
     const {
-      gifs: { reqType, queryStr, pagination }
+      gifs: { queryType, queryStr, pagination }
     } = getState();
     const newOffset = { offset: pagination.offset + pagination.count };
-    if (reqType === 'search') {
+    if (queryType === 'search') {
       return await dispatch(reqGifSearch(queryStr, newOffset));
     }
 
-    if (reqType === 'trending') {
+    if (queryType === 'trending') {
       return await dispatch(reqGifTrending(newOffset));
     }
   };

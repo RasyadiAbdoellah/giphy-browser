@@ -30,7 +30,7 @@ describe('reqGifSearch', () => {
   it('getMore should append data', () => {
     const store = mockStore({
       gifs: {
-        reqType: 'search',
+        queryType: 'search',
         queryStr: 'cats',
         pagination: { offset: 0, count: 1 }
       }
