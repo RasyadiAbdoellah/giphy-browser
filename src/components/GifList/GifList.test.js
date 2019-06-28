@@ -10,11 +10,13 @@ describe('GifList', () => {
         id: 'xyz',
         title: 'bla',
         images: {
-          fixHeightSmall: {
+          fixWidthSmall: {
             webp: 'testWebPURL',
-            url: 'testGifURL'
+            url: 'testGifURL',
+            height: '100px',
+            width: '100px'
           },
-          fixHeightSmallStill: {
+          fixWidthSmallStill: {
             url: 'testStillURL'
           }
         }
@@ -54,17 +56,17 @@ describe('GifList', () => {
         expect(source.length).toEqual(2);
       });
       it('first source tag is webp url', () => {
-        expect(source.at(0).prop('srcSet')).toEqual(dummyProps.gifs[0].images.fixHeightSmall.webp);
+        expect(source.at(0).prop('srcSet')).toEqual(dummyProps.gifs[0].images.fixWidthSmall.webp);
       });
       it('second source tag is gif url', () => {
-        expect(source.at(1).prop('srcSet')).toEqual(dummyProps.gifs[0].images.fixHeightSmall.url);
+        expect(source.at(1).prop('srcSet')).toEqual(dummyProps.gifs[0].images.fixWidthSmall.url);
       });
 
       //uses gif fallback url
       it('has fallback with valid url', () => {
         const img = component.find('img');
         expect(component.exists('img')).toBe(true);
-        expect(img.prop('src')).toEqual(dummyProps.gifs[0].images.fixHeightSmallStill.url);
+        expect(img.prop('src')).toEqual(dummyProps.gifs[0].images.fixWidthSmallStill.url);
       });
     });
 

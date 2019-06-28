@@ -8,12 +8,11 @@ const mockStore = configureStore(middlewares);
 describe('apiCall', () => {
   it('should search for 1 cat gif', () => {
     const store = mockStore({});
-    return store.dispatch(gifAct.apiCall('search', 'cats', { limit: 1 })).then(data => {
+    return store.dispatch(gifAct.apiCall('search', 'test', { limit: 1 })).then(data => {
       const actions = store.getActions();
-
       expect(actions[0]).toEqual(gifAct.clearGif());
       expect(actions[1]).toEqual(gifAct.isGetting());
-      expect(actions[2]).toEqual(gifAct.setReqType('search', 'cats'));
+      expect(actions[2]).toEqual(gifAct.setReqType('search', 'test'));
       expect(actions[3].type).toEqual(gifAct.receiveGifs().type);
       expect(actions[3].payload).toBeDefined();
       expect(actions[3].payload.pagination.count).toEqual(1);
