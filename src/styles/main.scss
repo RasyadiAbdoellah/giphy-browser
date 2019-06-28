@@ -14,12 +14,17 @@ html {
 #navbar {
   width: 100%;
   display: flex;
-  a {
-    display: block;
+  justify-content: center;
+  * input,
+  * button {
     padding: 0.5rem 1rem;
+  }
+  *button {
+    display: block;
     text-decoration: none;
     border: solid 1px $dark-gray;
     border-right: none;
+    background: white;
     &:first-of-type {
       border-radius: 5px 0 0 5px;
       margin-left: 1rem;
