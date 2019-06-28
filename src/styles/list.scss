@@ -9,12 +9,21 @@
 }
 .gif-entry {
   box-sizing: border-box;
-  box-shadow: 0 2px 3px $light-gray;
   margin: 0.5rem;
-  padding: 0.5rem;
-  text-decoration: none;
-
+  img {
+    border-radius: 10px;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+      filter: alpha(opacity=100);
+    }
+  }
   &:hover {
     background-color: $lightest-gray;
   }
+}
+
+.active img {
+  opacity: 1;
+  filter: alpha(opacity=100);
 }

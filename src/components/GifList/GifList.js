@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function GifEntry(props) {
-  const { gif, select } = props;
+  const { gif, select, active } = props;
   const {
     images: { fixWidthSmall, fixWidthSmallStill }
   } = gif;
 
   //video has style prop so it can use dimension values in gif image data
   return (
-    <div className='gif-entry' onClick={() => select(gif.id)}>
+    <div className={`gif-entry ${active ? 'active' : ''}`} onClick={() => select(gif.id)}>
       <picture
         style={{
           height: `${fixWidthSmall.height}px`,
@@ -26,11 +26,12 @@ function GifEntry(props) {
 
 class GifList extends React.Component {
   render() {
-    const { gifs } = this.props;
+    const { gifs, selectedId } = this.props;
     return (
       <div className='gif-collection'>
         {gifs.map(gif => {
-          return <GifEntry key={gif.id} gif={gif} {...this.props} />;
+          const active = selectedId === gif.id;
+          return <GifEntry key={gif.id} gif={gif} active={active} {...this.props} />;
         })}
       </div>
     );
