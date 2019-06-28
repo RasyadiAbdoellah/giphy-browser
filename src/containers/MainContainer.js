@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 
 // import { RouteWithProps } from '../bin'
 
-import { reqGifSearch, reqGifTrending, selectGif, getMore } from '../redux/actions/gif';
+import { apiCall, selectGif, getMore } from '../redux/actions/gif';
 import { getGifsList, getStateGifs, getGifById } from '../redux/selectors';
 import { GifList, MainNav, GifDetails } from '../components';
 import { GifDetailsContainer } from '.';
@@ -14,18 +14,17 @@ export class Main extends React.Component {
     const {
       gifList,
       selectedGif,
-      reqGifSearch,
-      reqGifTrending,
       selectGif,
       queryType,
       gifIsGetting,
-      gifGetFailed
+      gifGetFailed,
+      apiCall
     } = this.props;
     const gifReqStatus = !gifIsGetting && !gifGetFailed;
     const notRandom = queryType !== 'random';
     return (
       <>
-        <MainNav id='navbar' search={reqGifSearch} trending={reqGifTrending} />
+        <MainNav id='navbar' apiCall={apiCall} />
         <div className='flex-container'>
           <div id='main'>
             {
@@ -60,8 +59,12 @@ function mapStateToProps(state) {
   return { gifList, gifIsGetting, gifGetFailed, selectedGif, queryType };
 }
 
+function mapDispatchToProps(dispatch) {
+  return;
+}
+
 //exports the connected component
 export default connect(
   mapStateToProps,
-  { reqGifSearch, reqGifTrending, selectGif, getMore }
+  { apiCall, getMore, selectGif }
 )(Main);

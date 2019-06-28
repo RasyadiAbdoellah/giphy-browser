@@ -3,14 +3,13 @@ import * as gifAct from '../gifActionTypes';
 //exported for testing
 export const initialState = {
   isGetting: false,
-  isSearch: false,
-  isTrending: false,
+  isAppending: false,
   getSuccess: false,
   getFailed: false,
   errorMessage: '',
   allIds: [],
   byId: {},
-  selectedId: '',
+  selectedId: null,
   curPage: 0,
   queryStr: '',
   queryType: '',
@@ -57,7 +56,6 @@ function processRes(payload, state, shouldAppend = false) {
       allIds = data.map(gif => gif.id);
       byId = {};
     } else {
-      console.log(state);
       allIds = [...state.allIds, ...data.map(gif => gif.id)];
       byId = { ...state.byId };
     }
@@ -70,8 +68,6 @@ function processRes(payload, state, shouldAppend = false) {
     return Object.assign({}, state, {
       isGetting: false,
       getSuccess: true,
-      isSearch: false,
-      isTrending: false,
       allIds,
       byId,
       pagination: pagination
@@ -80,8 +76,6 @@ function processRes(payload, state, shouldAppend = false) {
     return Object.assign({}, state, {
       isGetting: false,
       getFailed: true,
-      isSearch: false,
-      isTrending: false,
       errorMessage: payload // This is to capture if a 200 is sent but nothing is there.
     });
   }
@@ -90,48 +84,45 @@ function processRes(payload, state, shouldAppend = false) {
 // reducer function below
 export default function(state = initialState, action) {
   switch (action.type) {
-    case gifAct.isGetSearch: {
+    case gifAct.isGetting: {
       return Object.assign({}, state, {
         isGetting: true,
-        isSearch: true,
         getSuccess: false,
         getFailed: false
       });
     }
-    case gifAct.isGetTrending: {
-      return Object.assign({}, state, {
-        isGetting: true,
-        isTrending: true,
-        getSuccess: false,
-        getFailed: false
-      });
-    }
-    case gifAct.getSuccess: {
-      return processRes(action.payload, state);
-    }
-    case gifAct.isAppend: {
-      return processRes(action.payload, state, true);
-    }
-    case gifAct.getFail: {
-      return Object.assign({}, state, {
-        isGetting: false,
-        getFailed: true,
-        isSearch: false,
-        isTrending: false,
-        errorMessage: action.payload //Will need to doublecheck this
-      });
-    }
+
     case gifAct.queryType: {
       return Object.assign({}, state, {
         queryType: action.payload.type,
         queryStr: action.payload.query
       });
     }
+    case gifAct.getSuccess: {
+      return processRes(action.payload, state);
+    }
+    case gifAct.isAppend: {
+      return Object.assign({}, state, {
+        isAppending: true,
+        getSuccess: false,
+        getFailed: false
+      });
+    }
+    case gifAct.appendSuccess: {
+      return processRes(action.payload, state, true);
+    }
+    case gifAct.getFail: {
+      return Object.assign({}, state, {
+        isGetting: false,
+        getFailed: true,
+        errorMessage: action.payload //Will need to doublecheck this
+      });
+    }
     case gifAct.selectGif: {
       return Object.assign({}, state, { selectedId: action.payload });
     }
     case gifAct.clearGif: {
-      return Object.assign({}, state, { selectedId: '' });
+      return Object.assign({}, state, { selectedId: null });
     }
     default:
       return state;

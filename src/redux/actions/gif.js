@@ -8,14 +8,12 @@ const client = giphyClient('2D5gTVuhBIQ2BLkOaKpPS9REFTTUuHMY');
 
 //all actions are exported for testing purposes
 
-//getSearch will switch IS_GETTING and IS_SEARCH to true
-export function getSearch() {
-  return { type: actions.isGetSearch };
+export function isGetting() {
+  return { type: actions.isGetting };
 }
-
-//getTrending will switch IS_GETTING and IS_TRENDING to true
-export function getTrending() {
-  return { type: actions.isGetTrending };
+//dispatched when getting more
+export function isAppend() {
+  return { type: actions.isAppend };
 }
 
 //called on success. sends response over and flips IS_GETTING, IS_SEARCH, and IS_TRENDING to false
@@ -25,10 +23,10 @@ export function receiveGifs(response) {
     payload: response
   };
 }
-
+//also called on success, but action type is append
 export function appendGifs(response) {
   return {
-    type: actions.isAppend,
+    type: actions.appendSuccess,
     payload: response
   };
 }
@@ -58,68 +56,59 @@ function decider(dispatch, addParams, res) {
   }
 }
 
-export function reqGifSearch(query, addParams = {}) {
-  return function(dispatch) {
+export function apiCall(queryType, query = null, addParams = {}) {
+  console.log(queryType);
+  return async function(dispatch) {
     if (!addParams.offset) {
-      dispatch(getSearch());
+      dispatch(isGetting());
+    } else {
+      dispatch(isAppend());
     }
-    return client
-      .search('gifs', { q: query, ...addParams })
-      .then(res => {
+
+    dispatch(setReqType(queryType, query));
+    try {
+      const res = client[queryType]('gifs', { q: query, ...addParams }).then(res => {
+        decider(dispatch, addParams, res);
         //if offset is provided this means its a req to load more gifs
-        decider(dispatch, addParams, res);
-        dispatch(setReqType('search', query));
         return res;
-      })
-      .catch(err => {
-        console.log(err);
-        dispatch(getFail(err));
-        dispatch(setReqType('failed'));
-        return err;
       });
-  };
-}
-
-export function reqGifTrending(addParams = {}) {
-  return function(dispatch) {
-    if (!addParams.offset) {
-      dispatch(getTrending());
+    } catch (err) {
+      console.log(err);
+      dispatch(getFail(err));
+      dispatch(setReqType('failed'));
+      return err;
     }
-    return client
-      .trending('gifs', addParams)
-      .then(res => {
-        decider(dispatch, addParams, res);
-        dispatch(setReqType('trending'));
-        return res;
-      })
-      .catch(err => {
-        console.log(err);
-        dispatch(getFail(err));
-        dispatch(setReqType('failed'));
-        return err;
-      });
   };
 }
 
+export function reqGifRandom() {
+  return async dispatch => {
+    return;
+  };
+}
 export function getMore() {
   return async function(dispatch, getState) {
-    const {
+    let {
       gifs: { queryType, queryStr, pagination }
     } = getState();
     const newOffset = { offset: pagination.offset + pagination.count };
-    if (queryType === 'search') {
-      return await dispatch(reqGifSearch(queryStr, newOffset));
-    }
-
     if (queryType === 'trending') {
-      return await dispatch(reqGifTrending(newOffset));
+      queryStr = null;
     }
+    return await dispatch(apiCall(queryType, queryStr, newOffset));
   };
 }
 
+export function clearGif() {
+  return { type: actions.clearGif };
+}
+
 export function selectGif(id) {
-  return {
-    type: actions.selectGif,
-    payload: id
+  return dispatch => {
+    dispatch(clearGif());
+    return dispatch({
+      type: actions.selectGif,
+      payload: id
+    });
   };
 }

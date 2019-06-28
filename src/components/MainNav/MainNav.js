@@ -16,7 +16,7 @@ class MainNav extends React.Component {
 
   submitHandler = event => {
     event.preventDefault();
-    this.props.search(this.state.value);
+    this.props.apiCall('search', this.state.value);
   };
 
   //Main Navigation should render a search bar and filter options.
@@ -28,14 +28,14 @@ class MainNav extends React.Component {
           <button type='submit'>Search</button>
         </form>
         <button>Random</button>
-        <button onClick={() => this.props.trending()}>Trending</button>
+        <button onClick={() => this.props.apiCall('trending')}>Trending</button>
       </nav>
     );
   }
 }
 
 MainNav.propTypes = {
-  search: PropTypes.func.isRequired
+  apiCall: PropTypes.func.isRequired
 };
 
 export default MainNav;
