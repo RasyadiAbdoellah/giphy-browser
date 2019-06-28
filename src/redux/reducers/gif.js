@@ -47,24 +47,27 @@ function extractGifData(gif) {
   return { title, id, user, urls, images };
 }
 
-//Processes response into usable data, used in both receiveGifs and appendGifs
+//Processes response into usable data, used in receiveGifs, appendGifs, and randomGif
 function processRes(payload, state, shouldAppend = false) {
-  let allIds, byId;
+  let allIds,
+    byId = {};
   const { data, pagination } = payload;
   if (data && typeof data !== 'string') {
-    if (!shouldAppend) {
-      allIds = data.map(gif => gif.id);
-      byId = {};
+    if (Array.isArray(data)) {
+      if (!shouldAppend) {
+        allIds = [...data.map(gif => gif.id)];
+      } else {
+        allIds = [...state.allIds, ...data.map(gif => gif.id)];
+        byId = { ...state.byId };
+      }
+
+      //transform data to what is needed
+      data.forEach(gif => {
+        byId[gif.id] = extractGifData(gif);
+      });
     } else {
-      allIds = [...state.allIds, ...data.map(gif => gif.id)];
-      byId = { ...state.byId };
+      return parseRandom(payload, state);
     }
-
-    //transform data to what is needed
-    data.forEach(gif => {
-      byId[gif.id] = extractGifData(gif);
-    });
-
     return Object.assign({}, state, {
       isGetting: false,
       getSuccess: true,
@@ -79,6 +82,25 @@ function processRes(payload, state, shouldAppend = false) {
       errorMessage: payload // This is to capture if a 200 is sent but nothing is there.
     });
   }
+}
+
+//Function below is to deal with random Gifs.
+//for some strange reason the giphy SDK sends back data that's in a different shape than the usual gif Object
+//Instead, id is in images, no embed url is given,
+function parseRandom(payload, state) {
+  let allIds,
+    byId = {};
+  const { data } = payload;
+  if (data) {
+    allIds = [data.images.id];
+    byId[data.images.id] = { id: data.images.id, ...extractGifData(data) };
+  }
+  return Object.assign({}, state, {
+    isGetting: false,
+    getSuccess: true,
+    allIds,
+    byId
+  });
 }
 
 // reducer function below

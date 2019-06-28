@@ -27,7 +27,7 @@ class MainNav extends React.Component {
           <input type='text' onChange={this.changeHandler} />
           <button type='submit'>Search</button>
         </form>
-        <button>Random</button>
+        <button onClick={() => this.props.getRandom()}>Random</button>
         <button onClick={() => this.props.apiCall('trending')}>Trending</button>
       </nav>
     );

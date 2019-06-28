@@ -6,6 +6,8 @@ import giphyClient from 'giphy-js-sdk-core';
 const client = giphyClient('2D5gTVuhBIQ2BLkOaKpPS9REFTTUuHMY');
 // const client = giphyClient();
 
+const baseParams = { rating: 'g' };
+
 //all actions are exported for testing purposes
 
 export function isGetting() {
@@ -48,7 +50,7 @@ export function setReqType(type, query = null) {
 // REQUEST TO API IS DONE HERE
 
 // decider is a helper function that determines if receiveGif should be passed with an append action
-function decider(dispatch, addParams, res) {
+function resDecider(dispatch, addParams, res) {
   if (addParams.offset) {
     dispatch(appendGifs(res));
   } else {
@@ -60,6 +62,7 @@ export function apiCall(queryType, query = null, addParams = {}) {
   console.log(queryType);
   return async function(dispatch) {
     if (!addParams.offset) {
+      dispatch(clearGif());
       dispatch(isGetting());
     } else {
       dispatch(isAppend());
@@ -67,11 +70,11 @@ export function apiCall(queryType, query = null, addParams = {}) {
 
     dispatch(setReqType(queryType, query));
     try {
-      const res = client[queryType]('gifs', { q: query, ...addParams }).then(res => {
-        decider(dispatch, addParams, res);
-        //if offset is provided this means its a req to load more gifs
-        return res;
-      });
+      const res = await client[queryType]('gifs', { q: query, ...baseParams, ...addParams });
+      console.log(res);
+      resDecider(dispatch, addParams, res);
+      //if offset is provided this means its a req to load more gifs
+      return res;
     } catch (err) {
       console.log(err);
       dispatch(getFail(err));
@@ -80,10 +83,11 @@ export function apiCall(queryType, query = null, addParams = {}) {
     }
   };
 }
-
-export function reqGifRandom() {
+export function getRandom() {
   return async dispatch => {
-    return;
+    const res = await dispatch(apiCall('random'));
+    // console.log(res);
+    dispatch(selectGif(res.data.images.id));
   };
 }
 export function getMore() {
