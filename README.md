@@ -48,6 +48,8 @@ Run `npm install` after you've unzipped the folder to install all dependencies. 
 
 ## Author's Notes
 
+My styling is a mess. I reused some scss from one of my other projects as a starting off point. Though it got me the layout I wanted pretty quickly, It's not split well, so a lot of the classes are all over the place. However I did try and keep as coherent as possible.
+
 Originally, a feature I wished to implement was to have frontend routing that looks like:
 
 `host-url/:requestType/:query/:pagination/:id`
