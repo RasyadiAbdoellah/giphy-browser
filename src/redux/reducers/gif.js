@@ -72,6 +72,7 @@ function processRes(payload, state, shouldAppend = false) {
     }
     return Object.assign({}, state, {
       isGetting: false,
+      isAppending: false,
       getSuccess: true,
       allIds,
       byId,
@@ -80,6 +81,7 @@ function processRes(payload, state, shouldAppend = false) {
   } else {
     return Object.assign({}, state, {
       isGetting: false,
+      isAppending: false,
       getFailed: true,
       errorMessage: payload // This is to capture if a 200 is sent but nothing is there.
     });

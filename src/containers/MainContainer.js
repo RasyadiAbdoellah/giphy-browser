@@ -16,15 +16,49 @@ export class Main extends React.Component {
       selectedGif,
       selectGif,
       clearGif,
-      queryType,
+      query,
       gifIsGetting,
+      gifIsAppending,
       gifGetFailed,
+      gifGetSuccess,
       apiCall
     } = this.props;
 
-    //Create fragments. This is to make things more readable
+    //simplify ui flags
     const gifReqStatus = !gifIsGetting && !gifGetFailed;
-    const notRandom = queryType !== 'random';
+    const notRandom = query.type !== 'random';
+    const noGifs =
+      !gifIsGetting &&
+      !gifIsAppending &&
+      !gifGetFailed &&
+      !gifGetSuccess &&
+      (gifList.length === 0 || !selectedGif);
+    const showSearchMsg = gifGetSuccess && query.type === 'search';
+    const showTrendingMsg = gifGetSuccess && query.type === 'trending';
+    const showRandomMsg = gifGetSuccess && selectedGif && query.type === 'random';
+
+    //Create fragments. for organizational purposes only
+    const uiMessage = (
+      <div
+        id='ui-message'
+        className={
+          'is-flex ' +
+          (gifGetFailed ? 'alert ' : '') +
+          (gifIsGetting || gifIsAppending ? 'info ' : '')
+        }
+      >
+        <h1>
+          {(gifIsGetting || gifIsAppending) && '...Loading'}
+          {gifGetFailed &&
+            "Uh-oh! Something went wrong! This is usually a problem with Giphy's response. Try refreshing"}
+          {showTrendingMsg && 'TRENDING GIFS'}
+          {showSearchMsg && `SEARCH RESULTS FOR ${query.term.toUpperCase()}`}
+          {showRandomMsg && 'RANDOM GIF'}
+          {noGifs && 'Search for GIFS, Checkout trending GIFS, or get a random GIF'}
+        </h1>
+      </div>
+    );
+
     const gifListFragment = gifReqStatus && notRandom && (
       <GifList gifs={gifList} select={selectGif} selectedId={selectedGif && selectedGif.id} />
     );
@@ -34,12 +68,10 @@ export class Main extends React.Component {
     return (
       <>
         <MainNav id='navbar' apiCall={apiCall} />
+        {uiMessage}
         <div className='is-flex'>
-          {queryType !== 'random' && (
+          {query.type !== 'random' && (
             <div id='main'>
-              {
-                //UI message based on isGetting, gifGetFailed values
-              }
               {gifListFragment}
               {getMoreButton}
             </div>
@@ -60,12 +92,14 @@ function mapStateToProps(state) {
   //all fns below are imported from  redux/selectors
   const gifList = getGifsList(state);
   const gifIsGetting = getStateGifs(state).isGetting;
+  const gifIsAppending = getStateGifs(state).isAppending;
   const gifGetFailed = getStateGifs(state).getFailed;
+  const gifGetSuccess = getStateGifs(state).getSuccess;
   const selectedGif =
     getStateGifs(state).selectedId && getGifById(state, getStateGifs(state).selectedId);
-  const queryType = getStateGifs(state).queryType;
+  const query = { type: getStateGifs(state).queryType, term: getStateGifs(state).queryStr };
 
-  return { gifList, gifIsGetting, gifGetFailed, selectedGif, queryType };
+  return { gifList, gifIsGetting, gifIsAppending, gifGetFailed, selectedGif, gifGetSuccess, query };
 }
 
 //exports the connected component
