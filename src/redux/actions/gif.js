@@ -74,7 +74,7 @@ export function selectGif(id) {
 //--------------------ASYNC ACTIONS USING THUNK------------------------------------------------
 export function apiCall(queryType, query = null, addParams = {}) {
   // apiCall dispatchs synchronous actions based on what type of request is being made. This is used for only search and trending
-  console.log(queryType);
+  // console.log(queryType);
   return async function(dispatch) {
     if (!addParams.offset) {
       dispatch(clearGif());

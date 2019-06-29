@@ -66,7 +66,7 @@ function processRes(payload, state, shouldAppend = false) {
         byId[gif.id] = extractGifData(gif);
       });
     } else {
-      console.log(data);
+      // console.log(data);
       allIds = [data.id];
       byId[data.id] = extractGifData(data);
     }

@@ -12,11 +12,11 @@ import { GifDetailsContainer } from '.';
 export class Main extends React.Component {
   render() {
     const {
-      gifList,
+      gifList = [],
       selectedGif,
       selectGif,
       clearGif,
-      query,
+      query = {type: null, term: null},
       gifIsGetting,
       gifIsAppending,
       gifGetFailed,
