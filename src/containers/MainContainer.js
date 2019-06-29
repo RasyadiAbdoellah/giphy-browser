@@ -34,7 +34,7 @@ export class Main extends React.Component {
     return (
       <>
         <MainNav id='navbar' apiCall={apiCall} />
-        <div className='flex-container'>
+        <div className='is-flex'>
           {queryType !== 'random' && (
             <div id='main'>
               {

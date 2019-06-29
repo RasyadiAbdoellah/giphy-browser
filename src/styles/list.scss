@@ -1,11 +1,6 @@
 .gif-collection {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: center;
   list-style: none;
-  max-height: 85vh;
-  overflow-y: auto;
+  width: 100%;
 }
 .gif-entry {
   box-sizing: border-box;

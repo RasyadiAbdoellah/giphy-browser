@@ -5,9 +5,7 @@
   max-width: 40%;
   right: 0;
   padding: 20px;
-  max-height: 85vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  position: sticky;
   top: 0;
   video,
   video source {
