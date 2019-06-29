@@ -1,6 +1,6 @@
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
-import * as gifAct from '../actions/gif';
+import * as gifAct from './gif';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -39,19 +39,18 @@ describe('apiCall', () => {
         pagination: { offset: 0, count: 1 }
       }
     });
-    store.dispatch(gifAct.getMore()).then(() => {
+    return store.dispatch(gifAct.getMore()).then(() => {
       const actions = store.getActions();
-      expect(actions[0]).toEqual(gifAct.clearGif());
-      expect(actions[1]).toEqual(gifAct.isAppend());
-      expect(actions[1].type).toEqual(gifAct.appendGifs().type);
-      expect(actions[1].payload.pagination.offset).toEqual(1);
+      expect(actions[0]).toEqual(gifAct.isAppend());
+      expect(actions[1]).toEqual(gifAct.setReqType('search', 'cats'));
+      expect(actions[2].type).toEqual(gifAct.appendGifs().type);
+      expect(actions[2].payload.pagination.offset).toEqual(1);
     });
   });
   it('should get 1 gif from trending', () => {
     const store = mockStore({});
     return store.dispatch(gifAct.apiCall('trending', null, { limit: 1 })).then(data => {
       const actions = store.getActions();
-
       expect(actions[0]).toEqual(gifAct.clearGif());
       expect(actions[1]).toEqual(gifAct.isGetting());
       expect(actions[2]).toEqual(gifAct.setReqType('trending', null));
