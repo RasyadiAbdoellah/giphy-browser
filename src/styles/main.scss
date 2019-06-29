@@ -37,6 +37,18 @@ button {
   }
 }
 
+#ui-message {
+  > * {
+    color: $gray;
+  }
+  &.info * {
+    color: darkblue;
+  }
+  &.alert * {
+    color: darkred;
+  }
+}
+
 #navbar {
   width: 100%;
   display: flex;
