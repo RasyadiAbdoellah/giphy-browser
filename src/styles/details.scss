@@ -12,58 +12,17 @@
     width: 100%;
   }
 }
-.title-field {
-  margin: 5px 5px 0 0;
-  padding: 5px 2px 0 2px;
-  border: none;
-  border-bottom: 2px solid $dark-gray;
-  font: inherit;
-  font-weight: bold;
-  font-size: 2em;
-}
 
-.quant-field {
-  max-width: 2rem;
-}
-.scale-field {
-  max-width: 5rem;
-}
-.name-field {
-  min-width: 7rem;
-}
-.quant-field,
-.scale-field,
-.name-field {
-  margin: 5px 5px 0 0;
-  padding: 5px 2px 1px 3px;
-  border: none;
-  border-bottom: 2px solid $light-gray;
-  font: inherit;
-  flex: 0 1 auto;
-  &::placeholder {
-    color: $gray;
+.table {
+  width: 100%;
+
+  & .label * {
+    margin: 0;
   }
-}
-
-.detail-text-area {
-  width: 80%;
-  height: 25vh;
-  font: inherit;
-  border: 1px solid $light-gray;
-}
-
-.ingredientFields {
-  display: flex;
-  flex-flow: row nowrap;
-}
-.ingredients {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-.ingredient-entry {
-  margin: 5px 5px 0 0;
-  padding: 5px 2px 1px 3px;
-  font: inherit;
-  flex: 0 1 auto;
+  tr:nth-child(even) {
+    background-color: $lightest-gray;
+  }
+  * td {
+    padding: 0.5rem;
+  }
 }

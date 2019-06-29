@@ -12,11 +12,37 @@ function GifDetails(props) {
         <video loop muted autoPlay controls playsInline key={gif.id}>
           <source src={gif.images.original.mp4} />
         </video>
+
         <h2>Details</h2>
-        {gif.title && <h3>Title: {gif.title}</h3>}
-        <ul className='gif-details'>
-          <li>URL: {gif.urls.embedUrl || gif.urls.url}</li>
-        </ul>
+        <table className='table'>
+          <thead className='heading label'>
+            <h4>GIF URLs</h4>
+          </thead>
+          <tr>
+            <td className='label'>
+              <h5>Giphy URL</h5>
+            </td>
+            <td>
+              <a href={gif.urls.url}>{gif.urls.url}</a>
+            </td>
+          </tr>
+          <tr>
+            <td className='label'>
+              <h5>Minified URL</h5>
+            </td>
+            <td>
+              <a href={gif.urls.bitlyUrl}>{gif.urls.bitlyUrl}</a>
+            </td>
+          </tr>
+          <tr>
+            <td className='label'>
+              <h5>Embed URL</h5>
+            </td>
+            <td>
+              <a href={gif.urls.embedUrl}>{gif.urls.embedUrl}</a>
+            </td>
+          </tr>
+        </table>
       </>
     );
   } else {
