@@ -4,6 +4,20 @@ html {
   height: 100%;
   margin: 0;
 }
+button {
+  font-size: 75%;
+  padding: 0.5rem;
+  display: block;
+  text-decoration: none;
+  border: solid 1px $dark-gray;
+  border-radius: 50px;
+  background: white;
+  &:hover {
+    background-color: $gray;
+    color: $text-light;
+    cursor: pointer;
+  }
+}
 .is-flex {
   display: flex;
   padding: 1rem;
@@ -32,6 +46,7 @@ html {
     padding: 0.5rem 2rem;
     font-size: 100%;
     display: block;
+
     text-decoration: none;
     border: solid 1px $dark-gray;
     border-radius: 50px;
@@ -40,6 +55,11 @@ html {
   form {
     :first-child {
       border-radius: 50px 0 0 50px;
+    }
+    button {
+      &:hover {
+        background-color: $gray;
+      }
     }
     :last-child {
       border-radius: 0 50px 50px 0;
@@ -55,6 +75,7 @@ html {
     color: $text-light;
     &:hover {
       background-color: $gray;
+      color: $text-light;
     }
   }
 }

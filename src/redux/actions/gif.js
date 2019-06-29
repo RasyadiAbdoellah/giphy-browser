@@ -110,7 +110,7 @@ export function getMore() {
     let {
       gifs: { queryType, queryStr, pagination }
     } = getState();
-    const newOffset = { offset: pagination.offset + pagination.count };
+    const newOffset = { offset: pagination.offset + pagination.count + 1 };
     if (queryType === 'trending') {
       queryStr = null;
     }
