@@ -28,7 +28,7 @@ class GifList extends React.Component {
   render() {
     const { gifs, selectedId } = this.props;
     return (
-      <div className='gif-collection'>
+      <div className='is-flex gif-collection'>
         {gifs.map(gif => {
           const active = selectedId === gif.id;
           return <GifEntry key={gif.id} gif={gif} active={active} {...this.props} />;

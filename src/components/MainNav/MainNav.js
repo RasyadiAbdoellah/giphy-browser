@@ -23,13 +23,15 @@ class MainNav extends React.Component {
   render() {
     return (
       <nav id={this.props.id}>
-        <form onSubmit={this.submitHandler}>
-          <input type='text' onChange={this.changeHandler} />
-          <button type='submit'>Search</button>
-        </form>
-        <div>
-          <button onClick={() => this.props.apiCall('random')}>Random</button>
-          <button onClick={() => this.props.apiCall('trending')}>Trending</button>
+        <div className='is-flex '>
+          <form onSubmit={this.submitHandler} className='is-flex'>
+            <input type='text' onChange={this.changeHandler} />
+            <button type='submit'>Search</button>
+          </form>
+          <div className='is-flex nowrap'>
+            <button onClick={() => this.props.apiCall('random')}>Random</button>
+            <button onClick={() => this.props.apiCall('trending')}>Trending</button>
+          </div>
         </div>
       </nav>
     );
