@@ -7,7 +7,6 @@ import { Route } from 'react-router-dom';
 import { apiCall, selectGif, getMore, clearGif } from '../redux/actions/gif';
 import { getGifsList, getStateGifs, getGifById } from '../redux/selectors';
 import { GifList, MainNav, GifDetails } from '../components';
-import { GifDetailsContainer } from '.';
 
 export class Main extends React.Component {
   render() {
@@ -16,7 +15,7 @@ export class Main extends React.Component {
       selectedGif,
       selectGif,
       clearGif,
-      query = {type: null, term: null},
+      query = { type: null, term: null },
       gifIsGetting,
       gifIsAppending,
       gifGetFailed,

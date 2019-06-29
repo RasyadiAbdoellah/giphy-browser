@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Giphy SPA Client
 
-## Available Scripts
+## About
 
-In the project directory, you can run:
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and uses Redux for state management. Some code from other projects I've done, mainly Redux logic and some styling, was used as a starting point.
 
-### `npm start`
+## Technologies used
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- React
+- Redux
+- SASS
+- Axios for sending API requests
+- Redux-thunk to create complex redux actions needed for API requests
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Component Design
 
-### `npm test`
+Below is a list of all components with explanation on what they do.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **MainContainer** - This is the top-level Redux-connected component. Requests to the API, list of received GIFs, selected GIF for detail view, and various UI flags based on API request status are available here as props. MainContainer renders all other components and passes down their required data and functions.
 
-### `npm run build`
+- **MainNav** - Renders the top navbar with search input and Random/Trending buttons. Requires apiCall prop
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **GifList** - Renders a list of gif entries. Note that GifList.js contains both the GifList component and the GifEntry component. Requires gifList prop and selectGif prop.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+- **GifDetails** - Renders the .mp4 , Title (if available, shows 'Untitled GIF' if no title is found), and URL details for a selected GIF. Requires gif prop and clearGif prop
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Components design follows convention for React/Redux projects in that they are split between normal React components and Redux-connected 'container' components. This is done for seperation of concerns. Containers handle all the UI logic and state modifications, and pass that down to visual components through props. This way app functionality is more centralized. Essentially, MainContainer is used to determine when, how, and what the other components render.
 
-### `npm run eject`
+Additionally, if you look at the git history, you will see that there is another GifDetailContainer component that was deleted. This container was supposed to be used to help integrate frontend routing, but since that was abandoned for the time being, the container served no purpose.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Redux
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+I chose to use Redux to make global state management easier to work with. API calls are handled through redux actions using `redux-thunk` and `axios`. The functions are located in `/src/redux/actions/gif.js`
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Tests
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+All functional components have unit tests that test what is rendered. All except `GifList` use `shallow()` to test if they render correctly without issue. `GifList` uses `mount()` to also test that the child component `GifEntry` is also rendered correctly and without issue. User interaction is also simulated and tested in components that have interactive elements, such as `MainNav`.
 
-## Learn More
+Since `MainContainer` is essentially a box to hold and connect the functional components in I chose to only have a shallow unit test for it, and test the Redux seperately.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The Redux actions.test only tests the API calls as they are the most complicated part of the code. Since the `apiCall` and `getMore` functions dispatch other actions, the test use the sequence of actions dispatched to assert validity.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The Redux reducers are assessed manually using `ReduxDevTools`. I found it easier to understand and debug using this tool rather than writing tests for every possible scenario.
 
-### Code Splitting
+## Local Installation
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Run `npm install` after you've unzipped the folder to install all dependencies. Afterwards you can run a local version using `npm start`. Automated tests can be run using `npm test`.
 
-### Analyzing the Bundle Size
+## Author's Notes
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Originally, a feature I wished to implement was to have frontend routing that looks like:
 
-### Making a Progressive Web App
+`host-url/:requestType/:query/:pagination/:id`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+so that navigating to `search/test/1/gifId` would show the 1st page of search results and the gif details for the gif with `id = gifId`. However I could not find the time to implement this feature, and ended up choosing to ensure my Redux actions and components were well-written and had thorough unit tests. However I lost valuable time trying to implement this feature, which could have been spent on other parts of this project.
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Another point of frustration and delay was my initial use of Giphy's API SDK for JavaScript `giphy-js-sdk-core`. Billed as an easy-to-use wrapper for their API endpoints, I discovered pretty late in this sprint that data response from the `.random` method does not follow the GIF object schema found on GIPHY's docs or their API explorer. I eventually had to remove the SDK from the project and use `axios` to send requests to the API. Had I gone with using `axios` from the beginning, I might have had time to work fine-tuning the styles and making things reponsive.
