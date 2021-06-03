@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
+import { useQuery, useQueryClient, QueryClient, QueryClientProvider } from 'react-query';
+import {ReactQueryDevtools} from 'react-query/devtools';
+
 
 // import { RouteWithProps } from '../bin'
+
+import {getGifs} from './gifReqs'
 
 import { apiCall, selectGif, getMore, clearGif } from '../redux/actions/gif';
 import { getGifsList, getStateGifs, getGifById } from '../redux/selectors';
@@ -102,7 +107,57 @@ function mapStateToProps(state) {
 }
 
 //exports the connected component
-export default connect(
+export const connected = connect(
   mapStateToProps,
   { apiCall, getMore, selectGif, clearGif }
 )(Main);
+
+
+const queryClient = new QueryClient()
+
+export function RQContainer() {
+
+  const [queryType , setQueryType ] = useState(null)
+  console.log('on mount',queryType)
+
+  const {data} = useQuery(['gifs', queryType ], getGifs, {enabled: !!queryType})
+
+
+  console.log(data)
+
+  return (
+
+    <div>
+
+      <div className='is-flex nowrap'>
+        <button onClick={() => {
+          setQueryType('trending')
+        }}>Get Trending</button>
+      </div>
+
+     
+      {data && data.data.map((gif, i) => {
+
+        return (
+        <picture key={i}>
+          <source srcSet={gif.images.fixWidthSmall.webp} media='(min-width: 600px)' />
+          <img src={gif.images.fixWidthSmallStill.url} alt={gif.title} />
+        </picture>
+      )
+      })}
+
+    </div>
+  )
+
+}
+
+export default function RQWrapper () {
+
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RQContainer/>
+      <ReactQueryDevtools initialIsOpen/>
+    </QueryClientProvider>
+  )
+}
