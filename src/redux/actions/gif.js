@@ -1,6 +1,6 @@
 import * as actions from '../gifActionTypes';
 
-import giphyClient from 'giphy-js-sdk-core';
+// import giphyClient from 'giphy-js-sdk-core';
 //switch apiCall to use axios due to giphyClient being finnicky
 import Axios from 'axios';
 const axios = Axios.create({ baseURL: 'https://api.giphy.com/v1/gifs/' });

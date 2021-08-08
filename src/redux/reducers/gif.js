@@ -27,8 +27,8 @@ function extractGifData(gif) {
   //extract objects from images
   const {
     images: {
-      fixed_height_small,
-      fixed_height_small_still,
+      // fixed_height_small,
+      // fixed_height_small_still,
       fixed_width_small,
       fixed_width_small_still,
       original
@@ -89,7 +89,7 @@ function processRes(payload, state, shouldAppend = false) {
 }
 
 // reducer function below
-export default function(state = initialState, action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case gifAct.isGetting: {
       return Object.assign({}, state, {
