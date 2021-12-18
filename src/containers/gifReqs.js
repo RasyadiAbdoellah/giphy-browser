@@ -36,9 +36,10 @@ function extractGifData(gif) {
 export function getGifs(obj, query = null, addParams = {} ) {
   const [_key, queryType] = obj.queryKey
   return axios(queryType, { params: { q: query, ...baseParams, ...addParams } }).then(res => {
-    const {meta, pagination} = res.data
+    const {meta, pagination, data} = res.data
+    console.log(res.data)
     return {
-      gifs: res.data.map(gif => extractGifData(gif)),
+      gifs: data.map(gif => extractGifData(gif)),
       meta,
       pagination
     }
