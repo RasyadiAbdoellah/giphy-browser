@@ -57,3 +57,7 @@ Originally, a feature I wished to implement was to have frontend routing that lo
 so that navigating to `search/test/1/gifId` would show the 1st page of search results and the gif details for the gif with `id = gifId`. However I could not find the time to implement this feature, and ended up choosing to ensure my Redux actions and components were well-written and had thorough unit tests. However I lost valuable time trying to implement this feature, which could have been spent on other parts of this project.
 
 Another point of frustration and delay was my initial use of Giphy's API SDK for JavaScript `giphy-js-sdk-core`. Billed as an easy-to-use wrapper for their API endpoints, I discovered pretty late in this sprint that data response from the `.random` method does not follow the GIF object schema found on GIPHY's docs or their API explorer. I eventually had to remove the SDK from the project and use `axios` to send requests to the API. Had I gone with using `axios` from the beginning, I might have had time to work fine-tuning the styles and making things reponsive.
+
+### Update 2021-12-18
+
+I've been using this project to assess ReactQuery for use in real-world settings. ReactQuery handles data differently to how the components are currently designed and required extensive reduction in features to get working. Experiments with ReactQuery can be found on the `query-refactor` branch.
